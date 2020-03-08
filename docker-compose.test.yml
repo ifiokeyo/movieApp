@@ -1,0 +1,44 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+    depends_on:
+      - db
+      - redis
+      - migration
+    environment:
+      - FLASK_ENV=testing
+      - REDIS_URL=redis://redis:6379/1
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/src
+    command: >
+      sh -c  "flask run -h '0.0.0.0' -p 8000"
+  db:
+    restart: always
+    image: postgres:10-alpine
+    ports:
+      - "54322:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=test_sennder
+      - POSTGRES_PASSWORD=postgres
+  redis:
+    image: redis:rc-alpine
+    volumes:
+      - redis_data:/data
+  migration:
+    build:
+      context: .
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - FLASK_ENV=testing
+    volumes:
+      - ./src:/src
+    command: flask db upgrade
+    depends_on:
+      - db
+volumes:
+    redis_data:

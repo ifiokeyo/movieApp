@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if movies == "Server error" %}
+    <p>{{ movies }}</p>
+    {% else %}
+    {% for movie in movies %}
+    <div class="card">
+      <div class="container">
+        <h4><b>{{ movie['title'] }}</b></h4>
+          <span>| {{ movie['director'] }} |</span> <span>{{ movie['producer'] }} |</span> <span>{{ movie['releaseDate'] }} </span>
+        <p>{{ movie['description'] }}</p>
+      </div>
+      <div class="container">
+        <h4><b>Cast & Crew</b></h4>
+        <p>
+          {% for person in movie['people'] %}
+            <ul>
+                <li>{{ person['name'] }}</li>
+            </ul>
+          {% endfor %}
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+{% endif %}
+</body>
+</html>

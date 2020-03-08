@@ -1,0 +1,5 @@
+import os
+
+db_uri = 'postgresql://postgres:postgres@db:5432/sennder'
+
+SQLALCHEMY_DATABASE_URI = db_uri if os.environ.get('FLASK_ENV') == 'development' else "postgresql://postgres:postgres@db/test_sennder"
